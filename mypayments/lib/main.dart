@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mypayments/pages/login/login_page.dart';
+import 'package:mypayments/utils/service_locator.dart';
 
 void main() {
+  ServiceLocator.setup();
   runApp(const MyApp());
 }
 
