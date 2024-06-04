@@ -3,8 +3,10 @@ import 'package:mypayments/models/contact.dart';
 import 'package:mypayments/utils/text_data.dart';
 
 class ContactListItem extends StatelessWidget {
+  final Function() onTapRecharge;
   final Contact contact;
-  const ContactListItem({super.key, required this.contact});
+  const ContactListItem(
+      {super.key, required this.contact, required this.onTapRecharge});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class ContactListItem extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 96, 118, 190),
                   shadowColor: Colors.transparent),
-              onPressed: () {},
+              onPressed: onTapRecharge,
               child: const Text(
                 TextData.rechargeNow,
                 style: TextStyle(

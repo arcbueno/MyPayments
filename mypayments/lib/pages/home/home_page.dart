@@ -5,6 +5,7 @@ import 'package:mypayments/pages/home/bloc/home_state.dart';
 import 'package:mypayments/utils/text_data.dart';
 import 'package:mypayments/widgets/add_contact/add_contact.dart';
 import 'package:mypayments/widgets/contact_list_item.dart';
+import 'package:mypayments/widgets/recharge_widget/recharge_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -98,7 +99,24 @@ class _HomePageState extends State<HomePage> {
                                   itemCount: state.user!.contacts.length,
                                   itemBuilder: (context, index) {
                                     return ContactListItem(
-                                        contact: state.user!.contacts[index]);
+                                      contact: state.user!.contacts[index],
+                                      onTapRecharge: () async {
+                                        await showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          context: context,
+                                          builder: (context) {
+                                            return Wrap(
+                                              children: [
+                                                RechargeWidget(
+                                                    contact: state
+                                                        .user!.contacts[index])
+                                              ],
+                                            );
+                                          },
+                                        );
+                                        bloc.updateContacts();
+                                      },
+                                    );
                                   }),
                             ),
                             if (state.user!.contacts.length < 5)

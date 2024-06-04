@@ -10,6 +10,8 @@ class HomeBloc extends Cubit<HomeState> {
   HomeBloc([AppController? controller])
       : appController = controller ?? getIt.get<AppController>(),
         super(HomeState(isLoading: false)) {
+    // TODO: Remove this code before release
+    // Test purpose only
     if (appController.state.user == null) {
       appController.setUser(
         User.fromMap(
@@ -18,7 +20,13 @@ class HomeBloc extends Cubit<HomeState> {
             'name': 'Verified User',
             'email': 'verified@email.com',
             'password': '123456',
-            'contacts': [],
+            'contacts': [
+              {
+                'name': 'John',
+                'number': '+971 5 837 9529',
+                'history': [],
+              }
+            ],
             'balance': 1200.0,
             'isVerified': true,
           },
@@ -31,14 +39,4 @@ class HomeBloc extends Cubit<HomeState> {
   void updateContacts() {
     emit(state.copyWith(user: appController.state.user));
   }
-
-  // Future<void> getPayments() async {
-  //   emit(state.copyWith(isLoading: true));
-  //   var result = await service.getPayments();
-  //   result.fold((success) {
-  //     emit(state.copyWith(isLoading: false, payments: success));
-  //   }, (failure) {
-  //     emit(state.copyWith(isLoading: false, error: failure.toString()));
-  //   });
-  // }
 }

@@ -4,6 +4,7 @@ import 'package:mypayments/models/contact.dart';
 import 'package:mypayments/utils/text_data.dart';
 import 'package:mypayments/widgets/add_contact/bloc/add_contact_bloc.dart';
 import 'package:mypayments/widgets/add_contact/bloc/state.dart';
+import 'package:mypayments/widgets/bottom_sheet_title.dart';
 import 'package:mypayments/widgets/custom_form_field.dart';
 
 class AddContact extends StatefulWidget {
@@ -44,25 +45,7 @@ class _AddContactState extends State<AddContact> {
             children: [
               Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        TextData.addContact,
-                        style: TextStyle(
-                          color: Colors.blue.shade900,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () => Navigator.pop(context),
-                        icon: const Icon(
-                          Icons.close,
-                        ),
-                      ),
-                    ],
-                  ),
+                  const BottomSheetTitle(title: TextData.addContact),
                   Form(
                     key: formKey,
                     child: Column(

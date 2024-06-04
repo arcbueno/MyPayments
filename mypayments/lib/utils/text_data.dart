@@ -26,4 +26,9 @@ class TextData {
   static const numberRequired = 'Number is required';
 
   static const balance = 'Balance';
+
+  static const limitReached = 'Limit reached';
+  static const insufficientBalance = 'Insufficient balance';
+
+  static const valueToBeRechaged = 'Recharge value';
 }
