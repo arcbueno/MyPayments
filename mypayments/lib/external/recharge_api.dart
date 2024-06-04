@@ -18,9 +18,10 @@ class RechargeApi {
     user = user.copyWith(balance: user.balance - value);
     var newTransaction = Transaction(date: DateTime.now(), value: value);
     contact = contact.copyWith(history: [...contact.history, newTransaction]);
-    for (var element in user.contacts) {
-      if (element.number == contact.number) element = contact;
-    }
+    final index =
+        user.contacts.indexWhere((element) => element.number == contact.number);
+    user.contacts[index] = contact;
+
     return user;
   }
 }

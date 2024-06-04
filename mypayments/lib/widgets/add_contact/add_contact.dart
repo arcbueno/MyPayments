@@ -92,6 +92,12 @@ class _AddContactState extends State<AddContact> {
                           )
                               .then((value) {
                             if (value) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content:
+                                      Text(TextData.contactCreatedWithSuccesss),
+                                ),
+                              );
                               Navigator.pop(context);
                             }
                           });

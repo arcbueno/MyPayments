@@ -127,6 +127,12 @@ class _RechargeWidgetState extends State<RechargeWidget> {
                           )
                               .then((value) {
                             if (value) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      TextData.contactRechargedSuccessfully),
+                                ),
+                              );
                               Navigator.pop(context);
                             }
                           });
