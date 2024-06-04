@@ -20,6 +20,7 @@ class _RechargeWidgetState extends State<RechargeWidget> {
   late final RechargeBloc bloc;
   final formKey = GlobalKey<FormState>();
   final totalValueController = TextEditingController();
+  String subValue = "";
 
   @override
   void initState() {
@@ -49,9 +50,10 @@ class _RechargeWidgetState extends State<RechargeWidget> {
                   Form(
                     key: formKey,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 12, bottom: 24),
+                          padding: const EdgeInsets.only(top: 12, bottom: 8),
                           child: CustomFormField(
                             label: TextData.valueToBeRechaged,
                             controller: totalValueController,
@@ -70,6 +72,10 @@ class _RechargeWidgetState extends State<RechargeWidget> {
                               decimal: true,
                             ),
                           ),
+                        ),
+                        const Text(
+                          TextData.chargeValue,
+                          style: TextStyle(color: Colors.black, fontSize: 16),
                         ),
                       ],
                     ),
@@ -123,7 +129,7 @@ class _RechargeWidgetState extends State<RechargeWidget> {
                         if (formKey.currentState!.validate()) {
                           bloc
                               .recharge(
-                            double.parse(totalValueController.text),
+                            double.parse(totalValueController.text) + 1,
                           )
                               .then((value) {
                             if (value) {

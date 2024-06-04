@@ -9,6 +9,7 @@ class CustomFormField extends StatefulWidget {
   final int? maxLength;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
+  final Function(String?)? onChanged;
 
   const CustomFormField({
     super.key,
@@ -19,6 +20,7 @@ class CustomFormField extends StatefulWidget {
     this.maxLength,
     this.inputFormatters,
     this.keyboardType,
+    this.onChanged,
   });
 
   @override
@@ -34,6 +36,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
       controller: widget.controller,
       validator: widget.validator,
       maxLength: widget.maxLength,
+      onChanged: widget.onChanged,
       inputFormatters: widget.inputFormatters,
       keyboardType: widget.keyboardType,
       decoration: InputDecoration(

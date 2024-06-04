@@ -24,4 +24,5 @@ class TextData {
 
   static const String contactCreatedWithSuccesss =
       'Contact created with successs';
+  static const String chargeValue = 'Charge and taxes: 1 AED';
 }
