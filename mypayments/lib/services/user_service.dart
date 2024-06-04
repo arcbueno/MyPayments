@@ -1,5 +1,6 @@
 import 'package:mypayments/exceptions/unexpected_error.dart';
 import 'package:mypayments/exceptions/user_not_found.dart';
+import 'package:mypayments/models/contact.dart';
 import 'package:mypayments/models/user.dart';
 import 'package:mypayments/repositories/user_repository.dart';
 import 'package:mypayments/utils/service_locator.dart';
@@ -20,6 +21,18 @@ class UserService {
         if (e is UserNotFound) {
           return Failure(Exception(TextData.notFoundErrorLogin));
         }
+        return Failure(e);
+      }
+      return Failure(UnexpectedError());
+    }
+  }
+
+  Future<Result<Contact, Exception>> addContact(Contact contact) async {
+    try {
+      var result = await repository.addContact(contact);
+      return Success(result);
+    } catch (e) {
+      if (e is Exception) {
         return Failure(e);
       }
       return Failure(UnexpectedError());

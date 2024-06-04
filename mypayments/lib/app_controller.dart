@@ -1,3 +1,4 @@
+import 'package:mypayments/models/contact.dart';
 import 'package:mypayments/models/user.dart';
 
 class AppController {
@@ -7,6 +8,12 @@ class AppController {
 
   void setUser(User user) {
     _appState = _appState.copyWith(user: user);
+  }
+
+  void addContact(Contact contact) {
+    _appState = _appState.copyWith(
+        user: _appState.user
+            ?.copyWith(contacts: [..._appState.user!.contacts, contact]));
   }
 }
 

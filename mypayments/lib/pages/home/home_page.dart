@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mypayments/models/contact.dart';
 import 'package:mypayments/pages/home/bloc/home_bloc.dart';
 import 'package:mypayments/pages/home/bloc/home_state.dart';
 import 'package:mypayments/utils/text_data.dart';
+import 'package:mypayments/widgets/add_contact/add_contact.dart';
 import 'package:mypayments/widgets/contact_list_item.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,22 +30,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        var contactListTemp = [
-          Contact(id: 0, name: 'John', history: [], number: '+915255219205'),
-          Contact(id: 0, name: 'Peter', history: [], number: '+915255219205'),
-          Contact(id: 0, name: 'Clara', history: [], number: '+915255219205'),
-          Contact(id: 0, name: 'Mary', history: [], number: '+915255219205'),
-          Contact(id: 0, name: 'James', history: [], number: '+915255219205'),
-        ];
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text(TextData.myPayments),
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Stack(
+    return SafeArea(
+      child: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text(TextData.myPayments),
+            ),
+            body: Stack(
               children: [
                 if (state.user == null)
                   Text(
@@ -57,24 +49,87 @@ class _HomePageState extends State<HomePage> {
                   )
                 else
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 24),
+                        padding: const EdgeInsets.only(
+                            bottom: 24, left: 24, right: 24),
+                        child: RichText(
+                          text: TextSpan(
+                              text: '${TextData.balance}:  ',
+                              style: TextStyle(
+                                color: Colors.blue.shade900,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 28,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: state.user!.balance.toStringAsFixed(2),
+                                  style: TextStyle(
+                                    color: Colors.blue.shade900,
+                                    fontSize: 24,
+                                  ),
+                                )
+                              ]),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            bottom: 24, left: 24, right: 24),
                         child: Text(
                           TextData.mobileRecharge,
                           style: TextStyle(
-                            color: Colors.blue.shade800,
+                            color: Colors.blue.shade900,
                             fontWeight: FontWeight.bold,
+                            fontSize: 28,
                           ),
                         ),
                       ),
-                      ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: contactListTemp.length,
-                          itemBuilder: (context, index) {
-                            return ContactListItem(
-                                contact: contactListTemp[index]);
-                          }),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              height: MediaQuery.sizeOf(context).height / 6,
+                              child: ListView.builder(
+                                  padding: const EdgeInsets.only(left: 24),
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: state.user!.contacts.length,
+                                  itemBuilder: (context, index) {
+                                    return ContactListItem(
+                                        contact: state.user!.contacts[index]);
+                                  }),
+                            ),
+                            if (state.user!.contacts.length < 5)
+                              IconButton(
+                                style: IconButton.styleFrom(
+                                  backgroundColor: Colors.blue.shade800,
+                                  shadowColor: Colors.transparent,
+                                ),
+                                onPressed: () async {
+                                  await showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    context: context,
+                                    builder: (context) {
+                                      return const Wrap(
+                                        children: [AddContact()],
+                                      );
+                                    },
+                                  );
+                                  bloc.updateContacts();
+                                },
+                                icon: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 if (state.isLoading)
@@ -83,10 +138,10 @@ class _HomePageState extends State<HomePage> {
                   ),
               ],
             ),
-          ),
-        );
-      },
-      bloc: bloc,
+          );
+        },
+        bloc: bloc,
+      ),
     );
   }
 }

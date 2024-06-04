@@ -5,6 +5,7 @@ class CustomFormField extends StatefulWidget {
   final TextEditingController controller;
   final bool isPassword;
   final String? Function(String?)? validator;
+  final int? maxLength;
 
   const CustomFormField({
     super.key,
@@ -12,6 +13,7 @@ class CustomFormField extends StatefulWidget {
     required this.controller,
     this.isPassword = false,
     this.validator,
+    this.maxLength,
   });
 
   @override
@@ -26,6 +28,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
     return TextFormField(
       controller: widget.controller,
       validator: widget.validator,
+      maxLength: widget.maxLength,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.all(12),
         labelText: widget.label,

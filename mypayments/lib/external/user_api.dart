@@ -1,4 +1,6 @@
-class UserDB {
+import 'package:mypayments/models/contact.dart';
+
+class UserAPI {
   static const verifiedUser = {
     'email': 'verified@email.com',
     'password': '12345',
@@ -16,7 +18,6 @@ class UserDB {
         'id': '1',
         'name': 'Verified User',
         'email': verifiedUser['email'],
-        'password': verifiedUser['password'],
         'contacts': [],
         'balance': 1200.0,
         'isVerified': true,
@@ -27,7 +28,6 @@ class UserDB {
         'id': '2',
         'name': 'Unverified User',
         'email': unverifiedUser['email'],
-        'password': unverifiedUser['password'],
         'contacts': [],
         'balance': 1200.0,
         'isVerified': false,
@@ -35,5 +35,9 @@ class UserDB {
     } else {
       return null;
     }
+  }
+
+  Future<bool> addContact(Contact contact) async {
+    return Future.delayed(const Duration(seconds: 1), () => true);
   }
 }

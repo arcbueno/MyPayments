@@ -12,4 +12,18 @@ class TextData {
   static const String mobileRecharge = 'Mobile Recharge';
 
   static const String myPayments = 'My Payments';
+
+  static const String rechargeNow = 'Recharge Now';
+
+  static const String addContact = 'Add contact';
+
+  static const contactName = 'Contact Name';
+
+  static const contactNumber = 'Contact Number';
+
+  static const nameRequired = 'Name is required';
+
+  static const numberRequired = 'Number is required';
+
+  static const balance = 'Balance';
 }

@@ -6,7 +6,6 @@ class User {
   final String id;
   final String name;
   final String email;
-  final String password;
   final List<Contact> contacts;
   final double balance;
   final bool isVerified;
@@ -15,7 +14,6 @@ class User {
     required this.id,
     required this.name,
     required this.email,
-    required this.password,
     required this.contacts,
     required this.balance,
     required this.isVerified,
@@ -34,7 +32,6 @@ class User {
       id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
-      password: password ?? this.password,
       contacts: contacts ?? this.contacts,
       balance: balance ?? this.balance,
       isVerified: isVerified ?? this.isVerified,
@@ -43,7 +40,7 @@ class User {
 
   @override
   String toString() {
-    return 'User(id: $id, name: $name, email: $email, password: $password, contacts: $contacts, balance: $balance, isVerified: $isVerified)';
+    return 'User(id: $id, name: $name, email: $email, contacts: $contacts, balance: $balance, isVerified: $isVerified)';
   }
 
   @override
@@ -54,7 +51,6 @@ class User {
         other.id == id &&
         other.name == name &&
         other.email == email &&
-        other.password == password &&
         listEquals(other.contacts, contacts) &&
         other.balance == balance &&
         other.isVerified == isVerified;
@@ -65,7 +61,6 @@ class User {
     return id.hashCode ^
         name.hashCode ^
         email.hashCode ^
-        password.hashCode ^
         contacts.hashCode ^
         balance.hashCode ^
         isVerified.hashCode;
@@ -76,7 +71,6 @@ class User {
       id: map['id'] ?? '',
       name: map['name'] ?? '',
       email: map['email'] ?? '',
-      password: map['password'] ?? '',
       contacts:
           List<Contact>.from(map['contacts']?.map((x) => Contact.fromMap(x))),
       balance: map['balance']?.toDouble() ?? 0.0,

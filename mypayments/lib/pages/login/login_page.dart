@@ -48,6 +48,7 @@ class _LoginPageState extends State<LoginPage> {
                 Column(
                   children: [
                     Form(
+                      key: formKey,
                       child: Column(
                         children: [
                           CustomFormField(
@@ -91,20 +92,23 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.only(top: 24.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          bloc
-                              .login(
-                                  emailController.text, passwordController.text)
-                              .then(
-                            (success) {
-                              if (success) {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => const HomePage(),
-                                  ),
-                                );
-                              }
-                            },
-                          );
+                          var success = formKey.currentState!.validate();
+                          if (success) {
+                            bloc
+                                .login(emailController.text,
+                                    passwordController.text)
+                                .then(
+                              (success) {
+                                if (success) {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => const HomePage(),
+                                    ),
+                                  );
+                                }
+                              },
+                            );
+                          }
                         },
                         child: const Text(TextData.login),
                       ),
