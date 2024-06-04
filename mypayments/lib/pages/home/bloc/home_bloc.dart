@@ -30,6 +30,11 @@ class HomeBloc extends Cubit<HomeState> {
                 'number': '+971 5 837 9528',
                 'history': [],
               },
+              {
+                'name': 'Mary',
+                'number': '+971 5 837 9527',
+                'history': [],
+              }
             ],
             'balance': 10200.0,
             'isVerified': false,

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mypayments/pages/home/bloc/home_bloc.dart';
 import 'package:mypayments/pages/home/bloc/home_state.dart';
@@ -31,134 +33,143 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text(TextData.myPayments),
-            ),
-            body: Stack(
-              children: [
-                if (state.user == null)
-                  Text(
-                    TextData.userNotFound,
-                    style: TextStyle(
-                      color: Colors.blue.shade800,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                else
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 24, left: 24, right: 24),
-                        child: RichText(
-                          text: TextSpan(
-                              text: '${TextData.balance}:  ',
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: SafeArea(
+        child: BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            return Scaffold(
+              appBar: AppBar(
+                title: const Text(TextData.myPayments),
+              ),
+              body: Stack(
+                children: [
+                  if (state.user == null)
+                    Text(
+                      TextData.userNotFound,
+                      style: TextStyle(
+                        color: Colors.blue.shade800,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  else
+                    SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                bottom: 24, left: 24, right: 24),
+                            child: RichText(
+                              text: TextSpan(
+                                  text: '${TextData.balance}:  ',
+                                  style: TextStyle(
+                                    color: Colors.blue.shade900,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 28,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: state.user!.balance
+                                          .toStringAsFixed(2),
+                                      style: TextStyle(
+                                        color: Colors.blue.shade900,
+                                        fontSize: 24,
+                                      ),
+                                    )
+                                  ]),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                bottom: 24, left: 24, right: 24),
+                            child: Text(
+                              TextData.mobileRecharge,
                               style: TextStyle(
                                 color: Colors.blue.shade900,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 28,
                               ),
-                              children: [
-                                TextSpan(
-                                  text: state.user!.balance.toStringAsFixed(2),
-                                  style: TextStyle(
-                                    color: Colors.blue.shade900,
-                                    fontSize: 24,
-                                  ),
-                                )
-                              ]),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 24, left: 24, right: 24),
-                        child: Text(
-                          TextData.mobileRecharge,
-                          style: TextStyle(
-                            color: Colors.blue.shade900,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 28,
+                            ),
                           ),
-                        ),
-                      ),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              height: MediaQuery.sizeOf(context).height / 6,
-                              child: ListView.builder(
-                                  padding: const EdgeInsets.only(left: 24),
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: state.user!.contacts.length,
-                                  itemBuilder: (context, index) {
-                                    return ContactListItem(
-                                      contact: state.user!.contacts[index],
-                                      onTapRecharge: () async {
+                          SizedBox(
+                            height: MediaQuery.sizeOf(context).height / 5,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  ListView.builder(
+                                    padding: const EdgeInsets.only(left: 24),
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemExtent:
+                                        MediaQuery.sizeOf(context).width / 2.40,
+                                    itemCount: state.user!.contacts.length,
+                                    itemBuilder: (context, index) {
+                                      return ContactListItem(
+                                        contact: state.user!.contacts[index],
+                                        onTapRecharge: () async {
+                                          await showModalBottomSheet(
+                                            isScrollControlled: true,
+                                            context: context,
+                                            builder: (context) {
+                                              return Wrap(
+                                                children: [
+                                                  RechargeWidget(
+                                                      contact: state.user!
+                                                          .contacts[index])
+                                                ],
+                                              );
+                                            },
+                                          );
+                                          bloc.updateContacts();
+                                        },
+                                      );
+                                    },
+                                  ),
+                                  if (state.user!.contacts.length < 5)
+                                    IconButton(
+                                      style: IconButton.styleFrom(
+                                        backgroundColor: Colors.blue.shade800,
+                                        shadowColor: Colors.transparent,
+                                      ),
+                                      onPressed: () async {
                                         await showModalBottomSheet(
                                           isScrollControlled: true,
                                           context: context,
                                           builder: (context) {
-                                            return Wrap(
-                                              children: [
-                                                RechargeWidget(
-                                                    contact: state
-                                                        .user!.contacts[index])
-                                              ],
+                                            return const Wrap(
+                                              children: [AddContact()],
                                             );
                                           },
                                         );
                                         bloc.updateContacts();
                                       },
-                                    );
-                                  }),
-                            ),
-                            if (state.user!.contacts.length < 5)
-                              IconButton(
-                                style: IconButton.styleFrom(
-                                  backgroundColor: Colors.blue.shade800,
-                                  shadowColor: Colors.transparent,
-                                ),
-                                onPressed: () async {
-                                  await showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    context: context,
-                                    builder: (context) {
-                                      return const Wrap(
-                                        children: [AddContact()],
-                                      );
-                                    },
-                                  );
-                                  bloc.updateContacts();
-                                },
-                                icon: const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                                      icon: const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Icon(
+                                          Icons.add,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                ],
                               ),
-                          ],
-                        ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                if (state.isLoading)
-                  const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-              ],
-            ),
-          );
-        },
-        bloc: bloc,
+                    ),
+                  if (state.isLoading)
+                    const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                ],
+              ),
+            );
+          },
+          bloc: bloc,
+        ),
       ),
     );
   }
