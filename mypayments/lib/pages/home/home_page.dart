@@ -115,9 +115,16 @@ class _HomePageState extends State<HomePage> {
                                             builder: (context) {
                                               return Wrap(
                                                 children: [
-                                                  RechargeWidget(
-                                                      contact: state.user!
-                                                          .contacts[index])
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        bottom: MediaQuery.of(
+                                                                context)
+                                                            .viewInsets
+                                                            .bottom),
+                                                    child: RechargeWidget(
+                                                        contact: state.user!
+                                                            .contacts[index]),
+                                                  )
                                                 ],
                                               );
                                             },
@@ -138,8 +145,17 @@ class _HomePageState extends State<HomePage> {
                                           isScrollControlled: true,
                                           context: context,
                                           builder: (context) {
-                                            return const Wrap(
-                                              children: [AddContact()],
+                                            return Wrap(
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom:
+                                                          MediaQuery.of(context)
+                                                              .viewInsets
+                                                              .bottom),
+                                                  child: const AddContact(),
+                                                )
+                                              ],
                                             );
                                           },
                                         );

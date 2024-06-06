@@ -41,79 +41,74 @@ class _AddContactState extends State<AddContact> {
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Stack(
+          child: Column(
             children: [
-              Column(
-                children: [
-                  const BottomSheetTitle(title: TextData.addContact),
-                  Form(
-                    key: formKey,
-                    child: Column(
-                      children: [
-                        CustomFormField(
-                          label: TextData.contactName,
-                          controller: nameController,
-                          maxLength: 20,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return TextData.nameRequired;
-                            }
-                            return null;
-                          },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 12, bottom: 24),
-                          child: CustomFormField(
-                            label: TextData.contactNumber,
-                            controller: numberController,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return TextData.numberRequired;
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 24),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          bloc
-                              .addContact(
-                            Contact(
-                              name: nameController.text,
-                              number: numberController.text,
-                              history: [],
-                            ),
-                          )
-                              .then((value) {
-                            if (value) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content:
-                                      Text(TextData.contactCreatedWithSuccesss),
-                                ),
-                              );
-                              Navigator.pop(context);
-                            }
-                          });
+              const BottomSheetTitle(title: TextData.addContact),
+              Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    CustomFormField(
+                      label: TextData.contactName,
+                      controller: nameController,
+                      maxLength: 20,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return TextData.nameRequired;
                         }
+                        return null;
                       },
-                      child: const Text(
-                        TextData.addContact,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12, bottom: 24),
+                      child: CustomFormField(
+                        label: TextData.contactNumber,
+                        controller: numberController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return TextData.numberRequired;
+                          }
+                          return null;
+                        },
                       ),
                     ),
-                  )
-                ],
-              ),
-              if (state.isLoading)
-                const Center(
-                  child: CircularProgressIndicator(),
+                  ],
                 ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 24),
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (state.isLoading) return;
+                    if (formKey.currentState!.validate()) {
+                      bloc
+                          .addContact(
+                        Contact(
+                          name: nameController.text,
+                          number: numberController.text,
+                          history: [],
+                        ),
+                      )
+                          .then((value) {
+                        if (value) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content:
+                                  Text(TextData.contactCreatedWithSuccesss),
+                            ),
+                          );
+                          Navigator.pop(context);
+                        }
+                      });
+                    }
+                  },
+                  child: state.isLoading
+                      ? const CircularProgressIndicator()
+                      : const Text(
+                          TextData.addContact,
+                        ),
+                ),
+              )
             ],
           ),
         );

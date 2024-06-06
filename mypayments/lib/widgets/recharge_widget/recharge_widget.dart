@@ -42,119 +42,114 @@ class _RechargeWidgetState extends State<RechargeWidget> {
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Stack(
+          child: Column(
             children: [
-              Column(
-                children: [
-                  const BottomSheetTitle(title: TextData.mobileRecharge),
-                  Form(
-                    key: formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 12, bottom: 8),
-                          child: CustomFormField(
-                            label: TextData.valueToBeRechaged,
-                            controller: totalValueController,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return TextData.numberRequired;
-                              }
-                              return null;
-                            },
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                RegExp(r'^\d+\.?\d{0,2}'),
-                              ),
-                            ],
-                            keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true,
-                            ),
-                          ),
-                        ),
-                        const Text(
-                          TextData.chargeValue,
-                          style: TextStyle(color: Colors.black, fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Wrap(
-                    children: [
-                      RechageSuggestionChip(
-                        value: 5,
-                        onSelect: onSelectChip,
-                      ),
-                      RechageSuggestionChip(
-                        value: 10,
-                        onSelect: onSelectChip,
-                      ),
-                      RechageSuggestionChip(
-                        value: 20,
-                        onSelect: onSelectChip,
-                      ),
-                      RechageSuggestionChip(
-                        value: 30,
-                        onSelect: onSelectChip,
-                      ),
-                      RechageSuggestionChip(
-                        value: 50,
-                        onSelect: onSelectChip,
-                      ),
-                      RechageSuggestionChip(
-                        value: 75,
-                        onSelect: onSelectChip,
-                      ),
-                      RechageSuggestionChip(
-                        value: 100,
-                        onSelect: onSelectChip,
-                      ),
-                    ],
-                  ),
-                  if (state.error != null)
+              const BottomSheetTitle(title: TextData.mobileRecharge),
+              Form(
+                key: formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 12.0),
-                      child: Text(
-                        state.error!,
-                        style: const TextStyle(
-                          color: Colors.red,
+                      padding: const EdgeInsets.only(top: 12, bottom: 8),
+                      child: CustomFormField(
+                        label: TextData.valueToBeRechaged,
+                        controller: totalValueController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return TextData.numberRequired;
+                          }
+                          return null;
+                        },
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d+\.?\d{0,2}'),
+                          ),
+                        ],
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
                         ),
                       ),
                     ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 24, top: 12),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          bloc
-                              .recharge(
-                            double.parse(totalValueController.text) + 1,
-                          )
-                              .then((value) {
-                            if (value) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                      TextData.contactRechargedSuccessfully),
-                                ),
-                              );
-                              Navigator.pop(context);
-                            }
-                          });
-                        }
-                      },
-                      child: const Text(
-                        TextData.rechargeNow,
-                      ),
+                    const Text(
+                      TextData.chargeValue,
+                      style: TextStyle(color: Colors.black, fontSize: 16),
                     ),
-                  )
+                  ],
+                ),
+              ),
+              Wrap(
+                children: [
+                  RechageSuggestionChip(
+                    value: 5,
+                    onSelect: onSelectChip,
+                  ),
+                  RechageSuggestionChip(
+                    value: 10,
+                    onSelect: onSelectChip,
+                  ),
+                  RechageSuggestionChip(
+                    value: 20,
+                    onSelect: onSelectChip,
+                  ),
+                  RechageSuggestionChip(
+                    value: 30,
+                    onSelect: onSelectChip,
+                  ),
+                  RechageSuggestionChip(
+                    value: 50,
+                    onSelect: onSelectChip,
+                  ),
+                  RechageSuggestionChip(
+                    value: 75,
+                    onSelect: onSelectChip,
+                  ),
+                  RechageSuggestionChip(
+                    value: 100,
+                    onSelect: onSelectChip,
+                  ),
                 ],
               ),
-              if (state.isLoading)
-                const Center(
-                  child: CircularProgressIndicator(),
+              if (state.error != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 12.0),
+                  child: Text(
+                    state.error!,
+                    style: const TextStyle(
+                      color: Colors.red,
+                    ),
+                  ),
                 ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 24, top: 12),
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (state.isLoading) return;
+                    if (formKey.currentState!.validate()) {
+                      bloc
+                          .recharge(
+                        double.parse(totalValueController.text) + 1,
+                      )
+                          .then((value) {
+                        if (value) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content:
+                                  Text(TextData.contactRechargedSuccessfully),
+                            ),
+                          );
+                          Navigator.pop(context);
+                        }
+                      });
+                    }
+                  },
+                  child: state.isLoading
+                      ? const CircularProgressIndicator()
+                      : const Text(
+                          TextData.rechargeNow,
+                        ),
+                ),
+              )
             ],
           ),
         );

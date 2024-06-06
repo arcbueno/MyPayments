@@ -15,7 +15,6 @@ class RechargeApi {
     // Basic internal logic for API
     // User is identified by the token from header
     var user = controller.state.user!;
-    user = user.copyWith(balance: user.balance - value);
     var newTransaction = Transaction(date: DateTime.now(), value: value);
     contact = contact.copyWith(history: [...contact.history, newTransaction]);
     final index =
